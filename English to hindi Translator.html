@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>English to Hindi Translator</title>
+</head>
+<body>
+    <h2>English to Hindi Translator</h2>
+
+    <textarea id="inputText" rows="5" cols="40" placeholder="Enter English text here..."></textarea><br><br>
+
+    <button onclick="translateText()">Translate</button><br><br>
+
+    <h3>Hindi Translation:</h3>
+    <div id="outputText"></div>
+
+    <script>
+        function translateText() {
+            const inputText = document.getElementById("inputText").value;
+
+            if (!inputText.trim()) {
+                alert("Please enter some text to translate.");
+                return;
+            }
+
+            fetch("https://translate.astian.org/translate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    q: inputText,
+                    source: "en",
+                    target: "hi",
+                    format: "text"
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("outputText").innerText = data.translatedText;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById("outputText").innerText = "Translation failed.";
+            });
+        }
+    </script>
+</body>
+</html>
